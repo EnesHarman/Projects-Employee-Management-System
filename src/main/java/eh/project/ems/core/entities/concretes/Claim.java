@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
@@ -21,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="claims")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","employees"})
 public class Claim {
 	@Id
 	@Column(name = "id")

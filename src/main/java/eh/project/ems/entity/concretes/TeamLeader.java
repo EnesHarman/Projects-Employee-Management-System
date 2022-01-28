@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import eh.project.ems.core.entities.concretes.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,14 +24,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="team_leaders")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","team"})
 public class TeamLeader {
 	@Id
 	@Column(name="id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long teamLeaderId;
 	
-	@Column(name="leader_since")
-	private Date teamLeaderSince= new Date();
+	@Column(name="leader_since", nullable = true)
+	private Date teamLeaderSince;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="employee_id")

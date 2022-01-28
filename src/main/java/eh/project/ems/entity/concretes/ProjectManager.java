@@ -12,8 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import eh.project.ems.core.entities.concretes.Employee;
 import lombok.AllArgsConstructor;
@@ -25,6 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="project_managers")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","projects","timeExtensionRequests"})
 public class ProjectManager {
 	@Id
 	@Column(name="id")
@@ -37,6 +41,9 @@ public class ProjectManager {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="employee_id")
 	private Employee employee;
+	
+	@OneToMany(mappedBy = "projectManager")
+	private List<TimeExtensionRequest> timeExtensionRequests;
 	
 	@ManyToMany()
 	@JoinTable(

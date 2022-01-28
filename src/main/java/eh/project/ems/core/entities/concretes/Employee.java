@@ -16,10 +16,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import eh.project.ems.entity.concretes.Address;
 import eh.project.ems.entity.concretes.Departmant;
 import eh.project.ems.entity.concretes.ProjectManager;
 import eh.project.ems.entity.concretes.Salary;
+import eh.project.ems.entity.concretes.SystemManager;
 import eh.project.ems.entity.concretes.Task;
 import eh.project.ems.entity.concretes.TeamLeader;
 import eh.project.ems.entity.concretes.TeamMember;
@@ -32,6 +35,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name="employees")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","projectManager","teamMember","teamLeader","systemManager","tasks"})
 public class Employee {
 	
 	@Id
@@ -80,6 +84,9 @@ public class Employee {
 	@OneToOne(mappedBy = "employee")
 	private TeamLeader teamLeader;
 	
+	@OneToOne(mappedBy ="employee")
+	private SystemManager systemManager;
+	
 	@ManyToMany(mappedBy = "employees")
 	private List<Claim> claims;
 	
@@ -87,5 +94,5 @@ public class Employee {
 	private List<Task> tasks;
 	
 	@OneToMany(mappedBy = "employee")
-	private List< Address> addresses;
+	private List<Address> addresses;
 }

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import eh.project.ems.core.entities.concretes.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="salaries")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","employee"})
 public class Salary {
 	@Id
 	@Column(name="id")
