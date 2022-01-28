@@ -1,5 +1,7 @@
 package eh.project.ems.entity.concretes;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +27,9 @@ public class SystemManager {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
 	private long systemManagerId;
+	
+	@Column(name="system_manager_since")
+	private Date systemManagerSince = new Date();
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="employee_id")

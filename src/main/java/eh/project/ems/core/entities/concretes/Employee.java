@@ -61,7 +61,7 @@ public class Employee {
 	@Column(name="identity_number",columnDefinition = "varchar(20)",unique = true)
 	private String identityNumber;
 	
-	@Column(name="join_at")
+	@Column(name="join_at", nullable = true)
 	private Date joinAt = new Date();
 	
 	@Column(name="profile_info")
