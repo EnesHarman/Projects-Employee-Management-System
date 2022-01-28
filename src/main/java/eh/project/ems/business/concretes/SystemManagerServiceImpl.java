@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eh.project.ems.business.abstracts.ClaimService;
 import eh.project.ems.business.abstracts.EmployeeService;
 import eh.project.ems.business.abstracts.SystemManagerService;
 import eh.project.ems.core.entities.concretes.Employee;
@@ -17,17 +18,18 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 
 	private final SystemManagerRepository systemManagerRepository;
 	private final EmployeeService employeeService;
+	private final ClaimService claimService;
 	
 	@Autowired
-	public SystemManagerServiceImpl(SystemManagerRepository systemManagerRepository, EmployeeService employeeService) {
+	public SystemManagerServiceImpl(SystemManagerRepository systemManagerRepository, EmployeeService employeeService, ClaimService claimService) {
 		super();
 		this.systemManagerRepository = systemManagerRepository;
 		this.employeeService = employeeService;
+		this.claimService = claimService;
 	}
 
-	
 	@Override
-	public Result addSystemManager(SystemManagerRegisterRequest registerRequest) {
+	public Result register(SystemManagerRegisterRequest registerRequest) {
 		Employee employee =new Employee();
 		employee.setEmail(registerRequest.getEmail());
 		employee.setPassword(registerRequest.getPassword());
@@ -37,7 +39,7 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 		employee.setIdentityNumber(registerRequest.getIdentityNumber());
 		employee.setJoinAt(new Date());
 		employee.setProfileInfo(registerRequest.getProfileInfo());
-		employee.setDepartmant(null);
+		
 		return null;
 	}
 

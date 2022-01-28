@@ -30,7 +30,7 @@ public class Departmant {
 	private long departmantId;
 	
 	@Column(name="name")
-	private long departmantName;
+	private String departmantName;
 	
 	@OneToMany(mappedBy = "departmant")
 	private List<Employee> employees;

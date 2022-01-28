@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import eh.project.ems.business.abstracts.AuthService;
 import eh.project.ems.core.utilities.result.DataResult;
+import eh.project.ems.core.utilities.result.Result;
 import eh.project.ems.entity.dto.requests.LoginRequest;
+import eh.project.ems.entity.dto.requests.SystemManagerRegisterRequest;
 import eh.project.ems.entity.dto.responses.LoginResponse;
 
 @RestController
@@ -34,4 +36,15 @@ public class AuthController {
 		}
 	}
 	
+	
+	@PostMapping("/register")
+	public ResponseEntity<?> register(@RequestBody SystemManagerRegisterRequest systemManagerRegisterRequest){
+		Result result = this.authService.register(systemManagerRegisterRequest);
+		if(result.getResult()) {
+			return ResponseEntity.ok(result.getMessage());
+		}
+		else {
+			return ResponseEntity.badRequest().body(result.getMessage());
+		}
+	}
 }

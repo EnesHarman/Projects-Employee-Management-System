@@ -12,7 +12,6 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import eh.project.ems.core.entities.concretes.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name="salaries")
-@JsonIgnoreProperties({"hibernateLazyInitializer","handler","employee"})
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","projectManager","teamLeader","teamMember"})
 public class Salary {
 	@Id
 	@Column(name="id")
@@ -39,5 +38,11 @@ public class Salary {
 	private long lastRisePercent;
 	
 	@OneToOne(mappedBy = "salary")
-	private Employee employee;
+	private ProjectManager projectManager;
+
+	@OneToOne(mappedBy = "salary")
+	private TeamLeader teamLeader;
+
+	@OneToOne(mappedBy = "salary")
+	private TeamMember teamMember;
 }

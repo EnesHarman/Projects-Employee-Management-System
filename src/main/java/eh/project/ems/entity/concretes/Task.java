@@ -35,7 +35,7 @@ public class Task {
 	private long taskId;
 	
 	@Column(name="name")
-	private long taskName;
+	private String taskName;
 	
 	@Column(name="time")
 	private Date time;

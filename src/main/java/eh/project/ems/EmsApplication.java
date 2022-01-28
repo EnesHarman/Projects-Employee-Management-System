@@ -1,10 +1,15 @@
 package eh.project.ems;
 
+import java.util.ArrayList;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import eh.project.ems.business.abstracts.ClaimService;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -29,6 +34,13 @@ public class EmsApplication {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	CommandLineRunner run(ClaimService claimService) { // PROGRAM BAŞLADĞINDA ÇALIŞACAK KOMUTLAR
+		return args->{
+			System.out.println(claimService.getSystemManagerClaims().getData().get(0).getClaimName());
+		};
 	}
 
 }

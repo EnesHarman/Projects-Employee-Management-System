@@ -70,10 +70,6 @@ public class Employee {
 	@ManyToOne()
 	@JoinColumn(name="departmant_id")
 	private Departmant departmant;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="salary_id")
-	private Salary salary;
 	
 	@OneToOne(mappedBy = "employee")
 	private ProjectManager projectManager;

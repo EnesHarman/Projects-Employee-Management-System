@@ -42,4 +42,8 @@ public class TeamMember {
 	@ManyToOne()
 	@JoinColumn(name="team_id" ,nullable = true)
 	private Team team;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="salary_id",nullable = true)
+	private Salary salary;
 }

@@ -52,4 +52,8 @@ public class ProjectManager {
 			inverseJoinColumns = @JoinColumn(name="project_id")
 			)
 	private List<Project> projects;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="salary_id",nullable = true)
+	private Salary salary;
 }

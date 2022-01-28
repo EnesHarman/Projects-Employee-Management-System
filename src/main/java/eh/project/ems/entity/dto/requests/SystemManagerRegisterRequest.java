@@ -23,8 +23,5 @@ public class SystemManagerRegisterRequest {
 
 	private String profileInfo;
 	
-	private long departmantId;
-	
-	private long salary;
 
 }

@@ -29,7 +29,7 @@ public class TaskType {
 	private long taskTypeId;
 	
 	@Column(name="name")
-	private long taskTypeName;
+	private String taskTypeName;
 	
 	@OneToMany(mappedBy = "type")
 	private List<Task> task;

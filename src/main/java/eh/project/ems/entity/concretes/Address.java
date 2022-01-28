@@ -29,7 +29,7 @@ public class Address {
 	private long addressId;
 	
 	@Column(name="address_info")
-	private long addressInfo;
+	private String addressInfo;
 	
 	@ManyToOne()
 	@JoinColumn(name="city_id")

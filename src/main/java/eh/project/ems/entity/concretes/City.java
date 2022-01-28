@@ -29,7 +29,7 @@ public class City {
 	private long cityId;
 	
 	@Column(name="name")
-	private long cityName;
+	private String cityName;
 	
 	@OneToMany(mappedBy = "city")
 	private List<Address> addresses;

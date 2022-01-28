@@ -41,4 +41,8 @@ public class TeamLeader {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="team_id")
 	private Team team;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="salary_id",nullable = true)
+	private Salary salary;
 }
