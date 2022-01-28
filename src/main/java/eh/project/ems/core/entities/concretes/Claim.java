@@ -32,7 +32,7 @@ public class Claim {
 	private long claimId;
 	
 	@Column(name="name")
-	private long claimName;
+	private String claimName;
 	
 	@ManyToMany
 	@JoinTable(

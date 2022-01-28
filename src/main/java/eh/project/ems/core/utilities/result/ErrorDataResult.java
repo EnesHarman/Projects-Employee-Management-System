@@ -1,7 +1,5 @@
 package eh.project.ems.core.utilities.result;
 
-
-
 public class ErrorDataResult<T> extends DataResult<T>{
 
 	public ErrorDataResult() {
