@@ -17,6 +17,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import eh.project.ems.business.abstracts.AuthService;
 import eh.project.ems.business.abstracts.EmployeeService;
 import eh.project.ems.business.abstracts.SystemManagerService;
+import eh.project.ems.business.abstracts.TeamMemberService;
 import eh.project.ems.core.security.constants.SecurityConstants;
 import eh.project.ems.core.utilities.result.DataResult;
 import eh.project.ems.core.utilities.result.ErrorDataResult;
@@ -24,20 +25,21 @@ import eh.project.ems.core.utilities.result.Result;
 import eh.project.ems.core.utilities.result.SuccessDataResult;
 import eh.project.ems.entity.dto.requests.LoginRequest;
 import eh.project.ems.entity.dto.requests.SystemManagerRegisterRequest;
+import eh.project.ems.entity.dto.requests.TeamMemberRegisterRequest;
 import eh.project.ems.entity.dto.responses.LoginResponse;
 @Service
 public class AuthServiceImpl implements AuthService{
 
-	private final EmployeeService employeeService;
 	private final AuthenticationManager authenticationManager;
 	private final SystemManagerService systemManagerService;
+	private final TeamMemberService teamMemberService;
 	
 	@Autowired
-	public AuthServiceImpl(EmployeeService employeeService,AuthenticationManager authenticationManager,SystemManagerService systemManagerService) {
+	public AuthServiceImpl(AuthenticationManager authenticationManager,SystemManagerService systemManagerService,TeamMemberService teamMemberService) {
 		super();
-		this.employeeService = employeeService;
 		this.authenticationManager = authenticationManager;
 		this.systemManagerService =  systemManagerService;
+		this.teamMemberService = teamMemberService;
 	}
 
 	@Override
@@ -67,6 +69,11 @@ public class AuthServiceImpl implements AuthService{
 	public Result register(SystemManagerRegisterRequest systemManagerRegisterRequest) {
 		return this.systemManagerService.register(systemManagerRegisterRequest);
 		
+	}
+
+	@Override
+	public Result register(TeamMemberRegisterRequest teamMemberRegisterRequest) {
+		return this.teamMemberService.register(teamMemberRegisterRequest);
 	}
 	
 }

@@ -35,9 +35,6 @@ public class Address {
 	@JoinColumn(name="city_id")
 	private City city;
 	
-	@ManyToOne()
-	@JoinColumn(name="country_id")
-	private Country country;
 	
 	@ManyToOne()
 	@JoinColumn(name="employee_id")

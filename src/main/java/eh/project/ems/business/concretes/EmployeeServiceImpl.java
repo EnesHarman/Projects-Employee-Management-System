@@ -42,6 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService{
 		}
 		else {
 			//TODO LOGGING
+			System.out.println("aaa");
 			
 			Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 			employee.getClaims().forEach(claim->{

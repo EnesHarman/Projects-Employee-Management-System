@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="team_leaders")
+@Table(name="team_members")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler","team"})
 public class TeamMember {
 	@Id
@@ -35,7 +35,7 @@ public class TeamMember {
 	@Column(name="member_since", nullable = true)
 	private Date memberSince;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="employee_id")
 	private Employee employee;
 	
@@ -43,7 +43,7 @@ public class TeamMember {
 	@JoinColumn(name="team_id" ,nullable = true)
 	private Team team;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="salary_id",nullable = true)
 	private Salary salary;
 }

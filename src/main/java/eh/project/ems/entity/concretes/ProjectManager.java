@@ -38,7 +38,7 @@ public class ProjectManager {
 	@Column(name="manager_since")
 	private Date managerSince = new Date();
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="employee_id")
 	private Employee employee;
 	
@@ -53,7 +53,7 @@ public class ProjectManager {
 			)
 	private List<Project> projects;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="salary_id",nullable = true)
 	private Salary salary;
 }

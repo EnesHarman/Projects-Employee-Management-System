@@ -1,15 +1,18 @@
 package eh.project.ems.entity.dto.requests;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import eh.project.ems.entity.concretes.Address;
+import eh.project.ems.entity.concretes.Salary;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SystemManagerRegisterRequest {
-	
+public class TeamMemberRegisterRequest {
 	private String email;
 	
 	private String password;
@@ -26,5 +29,9 @@ public class SystemManagerRegisterRequest {
 	
 	private Address address;
 	
-
+	private Salary salary;
+	
+	private long departmantId;
+	
+	private Date memberSince;
 }

@@ -4,16 +4,14 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,10 +32,6 @@ public class Claim {
 	@Column(name="name")
 	private String claimName;
 	
-	@ManyToMany
-	@JoinTable(
-			  name = "employee_claims", 
-			  joinColumns = @JoinColumn(name = "claim_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "employee_id"))
+	@ManyToMany(mappedBy = "claims",fetch = FetchType.LAZY )
 	private List<Employee> employees; 
 }

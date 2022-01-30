@@ -31,7 +31,7 @@ public class SystemManager {
 	@Column(name="system_manager_since")
 	private Date systemManagerSince = new Date();
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="employee_id")
 	private Employee employee;
 }

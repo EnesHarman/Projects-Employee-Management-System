@@ -26,8 +26,14 @@ public class ClaimServiceImpl implements ClaimService{
 
 	@Override
 	public DataResult<List<Claim>> getSystemManagerClaims() {
-		
 		return new SuccessDataResult<List<Claim>>(this.claimRepository.getSystemManagerClaims());
+	}
+
+
+
+	@Override
+	public DataResult<List<Claim>> getTeamMemberClaims() {
+		return new SuccessDataResult<List<Claim>>(this.claimRepository.getTeamMemberClaims());
 	}
 
 }

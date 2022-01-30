@@ -34,15 +34,15 @@ public class TeamLeader {
 	@Column(name="leader_since", nullable = true)
 	private Date teamLeaderSince;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="employee_id")
 	private Employee employee;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="team_id")
 	private Team team;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne()
 	@JoinColumn(name="salary_id",nullable = true)
 	private Salary salary;
 }

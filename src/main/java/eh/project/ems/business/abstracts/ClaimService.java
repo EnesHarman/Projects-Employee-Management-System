@@ -7,4 +7,5 @@ import eh.project.ems.core.utilities.result.DataResult;
 
 public interface ClaimService {
 	DataResult<List<Claim>> getSystemManagerClaims();
+	DataResult<List<Claim>> getTeamMemberClaims();
 }
