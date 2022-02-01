@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,6 +22,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import eh.project.ems.core.security.constants.SecurityConstants;
 
@@ -44,8 +47,10 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 					Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 					//TODO 
 					Arrays.stream(claims).forEach(claim->{
+
 						authorities.add(new SimpleGrantedAuthority(claim));
 					});
+					
 					
 					UsernamePasswordAuthenticationToken authenticationToken = 
 							new UsernamePasswordAuthenticationToken(email,null,authorities);
@@ -55,6 +60,12 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter{
 				} catch (Exception e) {
 					response.setHeader("error", e.getMessage());
 					response.setStatus(HttpStatus.FORBIDDEN.value());
+					
+					Map<String, String> errors = new HashMap<String,String>();
+					errors.put("error_message", e.getMessage());
+					
+					response.setContentType("application/json");
+					new ObjectMapper().writeValue(response.getOutputStream(), errors); 
 				}
 			}
 			else {

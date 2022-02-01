@@ -14,4 +14,7 @@ public interface ClaimRepository extends JpaRepository<Claim, Long>{
 
 	@Query(value="CALL GET_TEAM_MANAGER_CLAIMS();", nativeQuery = true)
 	List<Claim> getTeamMemberClaims();
+	
+	@Query(value="CALL GET_PROJECT_MANAGER_CLAIMS();", nativeQuery = true)
+	List<Claim> getProjectManagerClaims();
 }

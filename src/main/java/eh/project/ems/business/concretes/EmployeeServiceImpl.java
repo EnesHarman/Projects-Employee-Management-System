@@ -42,7 +42,6 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService{
 		}
 		else {
 			//TODO LOGGING
-			System.out.println("aaa");
 			
 			Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 			employee.getClaims().forEach(claim->{
@@ -55,6 +54,11 @@ public class EmployeeServiceImpl implements EmployeeService, UserDetailsService{
 	@Override
 	public DataResult<Employee> addEmployee(Employee employee) {
 		employee.setPassword(this.passwordEncoder.encode(employee.getPassword()));
+		return new SuccessDataResult<Employee>(this.employeeRepository.save(employee));
+	}
+	
+	@Override
+	public DataResult<Employee> updateEmployee(Employee employee){
 		return new SuccessDataResult<Employee>(this.employeeRepository.save(employee));
 	}
 

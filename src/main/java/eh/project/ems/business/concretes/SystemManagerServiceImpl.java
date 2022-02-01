@@ -12,14 +12,26 @@ import eh.project.ems.business.abstracts.AddressService;
 import eh.project.ems.business.abstracts.ClaimService;
 import eh.project.ems.business.abstracts.DepartmantService;
 import eh.project.ems.business.abstracts.EmployeeService;
+import eh.project.ems.business.abstracts.ProjectManagerService;
+import eh.project.ems.business.abstracts.ProjectService;
 import eh.project.ems.business.abstracts.SystemManagerService;
+import eh.project.ems.business.abstracts.TeamMemberService;
 import eh.project.ems.business.constants.Messages;
 import eh.project.ems.core.entities.concretes.Employee;
+import eh.project.ems.core.utilities.result.DataResult;
+import eh.project.ems.core.utilities.result.ErrorResult;
 import eh.project.ems.core.utilities.result.Result;
+import eh.project.ems.core.utilities.result.SuccessDataResult;
 import eh.project.ems.core.utilities.result.SuccessResult;
 import eh.project.ems.entity.concretes.Address;
+import eh.project.ems.entity.concretes.Project;
+import eh.project.ems.entity.concretes.ProjectManager;
 import eh.project.ems.entity.concretes.SystemManager;
+import eh.project.ems.entity.concretes.TeamLeader;
+import eh.project.ems.entity.concretes.TeamMember;
+import eh.project.ems.entity.dto.requests.CreateProjectRequest;
 import eh.project.ems.entity.dto.requests.SystemManagerRegisterRequest;
+import eh.project.ems.entity.dto.responses.TeamMembersResponse;
 import eh.project.ems.repository.AddressRepository;
 import eh.project.ems.repository.SystemManagerRepository;
 
@@ -31,17 +43,26 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 	private final ClaimService claimService;
 	private final DepartmantService departmantService;
 	private final AddressService addressService;
+	private final TeamMemberService teamMemberService;
+	private final ProjectManagerService projectManagerService;
+	private final ProjectService projectService;
 	
 	@Autowired
-	public SystemManagerServiceImpl(SystemManagerRepository systemManagerRepository, EmployeeService employeeService, 
-			ClaimService claimService,DepartmantService departmantService,AddressService addressService) {
+	public SystemManagerServiceImpl(SystemManagerRepository systemManagerRepository, EmployeeService employeeService,
+			ClaimService claimService, DepartmantService departmantService, AddressService addressService,
+			TeamMemberService teamMemberService, ProjectManagerService projectManagerService,
+			ProjectService projectService) {
 		super();
 		this.systemManagerRepository = systemManagerRepository;
 		this.employeeService = employeeService;
 		this.claimService = claimService;
 		this.departmantService = departmantService;
 		this.addressService = addressService;
+		this.teamMemberService = teamMemberService;
+		this.projectManagerService = projectManagerService;
+		this.projectService = projectService;
 	}
+
 
 	@Override
 	public Result register(SystemManagerRegisterRequest registerRequest) {
@@ -69,6 +90,27 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 		this.systemManagerRepository.save(systemManager);
 		
 		return new SuccessResult(Messages.SystemManagerRegistered);
+	}
+
+	@Override
+	public Result addProject(CreateProjectRequest createProjectRequest) {
+		DataResult<TeamMember> teamMemberResult =  this.teamMemberService.getTeamMember(createProjectRequest.getProjectManagerId());
+		if(!teamMemberResult.getResult()) {
+			return new ErrorResult(Messages.TeamMemberNotFound);
+		}
+		ProjectManager projectManager =  this.projectManagerService.assignProjectManager(teamMemberResult.getData()).getData();
+
+		this.teamMemberService.deleteTeamMember(teamMemberResult.getData());
+		
+		Project project = new Project();
+		project.setProjectName(createProjectRequest.getProjectName());
+		project.setEndingDate(createProjectRequest.getEndingDate());
+		project.setProjectDescription(createProjectRequest.getProjectDescription());
+		project.setProjectManager(projectManager);
+		project.setStartingDate(createProjectRequest.getStartingDate());
+		
+		this.projectService.addProject(project);
+		return new SuccessResult(Messages.ProjectAdded);
 	}
 
 }

@@ -101,4 +101,8 @@ public class Employee {
 	
 	@OneToMany(mappedBy = "employee")
 	private List<Address> addresses;
+	
+	public Employee(long id) {
+		this.employeeId = id;
+	}
 }

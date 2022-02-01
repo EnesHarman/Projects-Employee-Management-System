@@ -1,11 +1,15 @@
 package eh.project.ems;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import eh.project.ems.business.abstracts.TeamMemberService;
+import eh.project.ems.repository.ClaimRepository;
+import eh.project.ems.repository.ProjectManagerRepository;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -32,9 +36,9 @@ public class EmsApplication {
 	}
 	
 //	@Bean
-//	CommandLineRunner run(ClaimService claimService) { // PROGRAM BAŞLADĞINDA ÇALIŞACAK KOMUTLAR
+//	CommandLineRunner run(ClaimRepository teamMemberService) { // PROGRAM BAŞLADĞINDA ÇALIŞACAK KOMUTLAR
 //		return args->{
-//			System.out.println(claimService.getSystemManagerClaims().getData().get(0).getClaimName());
+//			System.out.println(teamMemberService.getSystemManagerClaims());
 //		};
 //	}
 

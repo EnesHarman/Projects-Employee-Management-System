@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,7 +29,10 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long addressId;
 	
-	@Column(name="address_info")
+	@Column(name="address_key")
+	private String addressKey;
+	
+	@Column(name="address_info",columnDefinition = "nvarchar(255)")
 	private String addressInfo;
 	
 	@ManyToOne()

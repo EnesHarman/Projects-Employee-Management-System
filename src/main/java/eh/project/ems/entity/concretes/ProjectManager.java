@@ -45,13 +45,8 @@ public class ProjectManager {
 	@OneToMany(mappedBy = "projectManager")
 	private List<TimeExtensionRequest> timeExtensionRequests;
 	
-	@ManyToMany()
-	@JoinTable(
-			name="managers_of_projects",
-			joinColumns = @JoinColumn(name="project_manager_id"),
-			inverseJoinColumns = @JoinColumn(name="project_id")
-			)
-	private List<Project> projects;
+	@OneToOne(mappedBy = "projectManager")
+	private Project project;
 	
 	@OneToOne()
 	@JoinColumn(name="salary_id",nullable = true)

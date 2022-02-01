@@ -3,6 +3,7 @@ package eh.project.ems.core.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,10 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors();
 		http.csrf().disable();
+		http.cors();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().antMatchers("/api/auth/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/systemmanagerpanel/project/add/**").hasAnyAuthority("CLAIM_ADD_PROJECT");
+		http.authorizeRequests().antMatchers("/api/auth/login/**").permitAll();
+		http.authorizeRequests().antMatchers("/api/auth/systemmanager/**").permitAll();
+		http.authorizeRequests().antMatchers("/api/auth/teammember/**").permitAll();
 		
 		http.authorizeRequests()
         .antMatchers(
@@ -66,8 +70,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
               "/swagger.json")
         .permitAll();
 		
-		http.authorizeRequests().anyRequest().authenticated();
 		http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.authorizeRequests().anyRequest().authenticated();
 	}
 	
 	@Override
