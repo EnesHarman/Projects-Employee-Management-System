@@ -9,4 +9,6 @@ public interface SystemManagerService {
 	Result register(SystemManagerRegisterRequest systemManagerRegisterRequest);
 	
 	Result addProject(CreateProjectRequest createProjectRequest);
+
+	Result deleteProject(long projectId);
 }

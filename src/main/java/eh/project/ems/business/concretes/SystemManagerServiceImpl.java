@@ -4,18 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import eh.project.ems.business.abstracts.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import eh.project.ems.business.abstracts.AddressService;
-import eh.project.ems.business.abstracts.ClaimService;
-import eh.project.ems.business.abstracts.DepartmantService;
-import eh.project.ems.business.abstracts.EmployeeService;
-import eh.project.ems.business.abstracts.ProjectManagerService;
-import eh.project.ems.business.abstracts.ProjectService;
-import eh.project.ems.business.abstracts.SystemManagerService;
-import eh.project.ems.business.abstracts.TeamMemberService;
 import eh.project.ems.business.constants.Messages;
 import eh.project.ems.core.entities.concretes.Employee;
 import eh.project.ems.core.utilities.result.DataResult;
@@ -46,13 +39,13 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 	private final TeamMemberService teamMemberService;
 	private final ProjectManagerService projectManagerService;
 	private final ProjectService projectService;
-	
+	private final RoleService roleService;
+
 	@Autowired
 	public SystemManagerServiceImpl(SystemManagerRepository systemManagerRepository, EmployeeService employeeService,
-			ClaimService claimService, DepartmantService departmantService, AddressService addressService,
-			TeamMemberService teamMemberService, ProjectManagerService projectManagerService,
-			ProjectService projectService) {
-		super();
+									ClaimService claimService, DepartmantService departmantService, AddressService addressService,
+									TeamMemberService teamMemberService, ProjectManagerService projectManagerService,
+									ProjectService projectService, RoleService roleService) {
 		this.systemManagerRepository = systemManagerRepository;
 		this.employeeService = employeeService;
 		this.claimService = claimService;
@@ -61,8 +54,8 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 		this.teamMemberService = teamMemberService;
 		this.projectManagerService = projectManagerService;
 		this.projectService = projectService;
+		this.roleService = roleService;
 	}
-
 
 	@Override
 	public Result register(SystemManagerRegisterRequest registerRequest) {
@@ -111,6 +104,27 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 		
 		this.projectService.addProject(project);
 		return new SuccessResult(Messages.ProjectAdded);
+	}
+
+
+	@Override
+	public Result deleteProject(long projectId) {
+		DataResult<Project> projectResult = this.projectService.getProjectById(projectId);
+		if(!projectResult.getResult()) {
+			return new ErrorResult(projectResult.getMessage());
+		}
+		DataResult<ProjectManager> projectManagerResult = this.projectManagerService.getProjectManagerById(projectResult.getData().getProjectManager().getProjectManagerId());
+		if(!projectManagerResult.getResult()) {
+			return new ErrorResult(projectResult.getMessage());
+		}
+		
+		this.teamMemberService.assignTeamMember(projectManagerResult.getData());
+		
+		this.projectService.deleteProject(projectResult.getData());
+		
+		this.projectManagerService.deleteProjectManager(projectManagerResult.getData());
+		
+		return new SuccessResult(Messages.ProjectDeleted);
 	}
 
 }

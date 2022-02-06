@@ -22,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import eh.project.ems.entity.concretes.Address;
 import eh.project.ems.entity.concretes.Departmant;
+import eh.project.ems.entity.concretes.Notification;
+import eh.project.ems.entity.concretes.PastRole;
 import eh.project.ems.entity.concretes.ProjectManager;
 import eh.project.ems.entity.concretes.Salary;
 import eh.project.ems.entity.concretes.SystemManager;
@@ -69,6 +71,9 @@ public class Employee {
 	@Column(name="profile_info")
 	private String profileInfo;
 	
+	@Column(name="profile_image")
+	private String profileImage;
+	
 	@ManyToOne()
 	@JoinColumn(name="departmant_id")
 	private Departmant departmant;
@@ -85,6 +90,7 @@ public class Employee {
 	@OneToOne(mappedBy ="employee")
 	private SystemManager systemManager;
 	
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "employee_claims",
     joinColumns = {
@@ -98,6 +104,12 @@ public class Employee {
 	
 	@ManyToMany(mappedBy = "employees")
 	private List<Task> tasks;
+	
+	@OneToMany(mappedBy = "employee")
+	private List<PastRole> pastRoles;
+
+	@OneToMany(mappedBy = "employee")
+	private List<Notification> notifications;
 	
 	@OneToMany(mappedBy = "employee")
 	private List<Address> addresses;

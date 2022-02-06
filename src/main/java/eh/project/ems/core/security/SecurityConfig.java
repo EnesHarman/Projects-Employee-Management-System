@@ -57,6 +57,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 		http.cors();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/systemmanagerpanel/project/add/**").hasAnyAuthority("CLAIM_ADD_PROJECT");
+		
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/api/systemmanagerpanel/project/delete/**").hasAnyAuthority("CLAIM_DELETE_PROJECT");
+		
+		
+		http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/projectmanagerpanel/project/addteam/**").hasAnyAuthority("CLAIM_CREATE_TEAM");
+		http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/api/projectmanagerpanel/project/removeteam/**").hasAnyAuthority("CLAIM_DELETE_TEAM");
 		http.authorizeRequests().antMatchers("/api/auth/login/**").permitAll();
 		http.authorizeRequests().antMatchers("/api/auth/systemmanager/**").permitAll();
 		http.authorizeRequests().antMatchers("/api/auth/teammember/**").permitAll();

@@ -2,6 +2,8 @@ package eh.project.ems.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,16 @@ public class SystemManagerController {
 	@PostMapping("/project/add")
 	public ResponseEntity<?> addProject(@RequestBody CreateProjectRequest createProjectRequest){
 		Result result = this.systemManagerService.addProject(createProjectRequest);
+		if(result.getResult()) {
+			return ResponseEntity.ok(result.getMessage());
+		}
+		else {
+			return ResponseEntity.badRequest().body(result.getMessage());
+		}
+	}
+	@DeleteMapping("/project/delete/{projectId}")
+	public ResponseEntity<?> deleteProject(@PathVariable long projectId){
+		Result result = this.systemManagerService.deleteProject(projectId);
 		if(result.getResult()) {
 			return ResponseEntity.ok(result.getMessage());
 		}

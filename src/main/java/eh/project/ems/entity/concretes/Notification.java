@@ -1,6 +1,5 @@
 package eh.project.ems.entity.concretes;
 
-
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,29 +11,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import eh.project.ems.core.entities.concretes.Employee;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="time_extension_request")
-public class TimeExtensionRequest {
-
+@Table(name="notifications")
+public class Notification {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	private long timeExtensionRequestId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long notificationId;
 	
-	@Column(name="extension_amount")
-	private int extensionAmount;
+	@Column(name="content",columnDefinition = "text")
+	private String content;
 	
-	@Column(name="status")
-	private Date status;
+	@Column(name="sending_date")
+	private Date sendingDate;
 	
-	@ManyToOne
-	@JoinColumn(name="project_manager_id")
-	private ProjectManager projectManager;
+	@ManyToOne()
+	@JoinColumn(name="type_id")
+	private NotificationType type;
+	
+	@ManyToOne()
+	@JoinColumn(name="employee_id")
+	private Employee employee;
 }

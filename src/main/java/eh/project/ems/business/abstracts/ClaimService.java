@@ -9,4 +9,5 @@ public interface ClaimService {
 	DataResult<List<Claim>> getSystemManagerClaims();
 	DataResult<List<Claim>> getTeamMemberClaims();
 	DataResult<List<Claim>> getProjectManagerClaims();
+	DataResult<List<Claim>> getTeamLeaderClaims();
 }

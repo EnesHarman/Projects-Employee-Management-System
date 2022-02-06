@@ -4,16 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import eh.project.ems.business.abstracts.*;
+import eh.project.ems.entity.concretes.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eh.project.ems.business.abstracts.AddressService;
-import eh.project.ems.business.abstracts.ClaimService;
-import eh.project.ems.business.abstracts.DepartmantService;
-import eh.project.ems.business.abstracts.EmployeeService;
-import eh.project.ems.business.abstracts.SalaryService;
-import eh.project.ems.business.abstracts.TeamMemberService;
-import eh.project.ems.business.abstracts.TeamService;
 import eh.project.ems.business.constants.Messages;
 import eh.project.ems.core.entities.concretes.Employee;
 import eh.project.ems.core.utilities.result.DataResult;
@@ -21,8 +17,6 @@ import eh.project.ems.core.utilities.result.ErrorDataResult;
 import eh.project.ems.core.utilities.result.Result;
 import eh.project.ems.core.utilities.result.SuccessDataResult;
 import eh.project.ems.core.utilities.result.SuccessResult;
-import eh.project.ems.entity.concretes.Team;
-import eh.project.ems.entity.concretes.TeamMember;
 import eh.project.ems.entity.dto.requests.TeamMemberRegisterRequest;
 import eh.project.ems.entity.dto.responses.TeamMembersResponse;
 import eh.project.ems.repository.TeamMemberRepository;
@@ -37,12 +31,14 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 	private final ClaimService claimService;
 	private final EmployeeService employeeService;
 	private final TeamService teamService;
+	private final RoleService roleService;
+	private final PastRoleService pastRoleService;
 	
 	
-
+	@Autowired
 	public TeamMemberServiceImpl(TeamMemberRepository teamMemberRepository, DepartmantService departmantService,
 			SalaryService salaryService, AddressService addressService, ClaimService claimService,
-			EmployeeService employeeService, TeamService teamService) {
+			EmployeeService employeeService, TeamService teamService,RoleService roleService,PastRoleService pastRoleService) {
 		super();
 		this.teamMemberRepository = teamMemberRepository;
 		this.departmantService = departmantService;
@@ -51,6 +47,8 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 		this.claimService = claimService;
 		this.employeeService = employeeService;
 		this.teamService = teamService;
+		this.roleService = roleService;
+		this.pastRoleService = pastRoleService;
 	}
 
 	@Override
@@ -114,6 +112,53 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 	@Transactional
 	public Result deleteTeamMember(TeamMember teamMember) {
 		this.teamMemberRepository.deleteById(teamMember.getTeamMemberId());
+		return new SuccessResult();
+	}
+
+	@Override
+	@Transactional
+	public Result assignTeamMember(ProjectManager projectManager) {
+		TeamMember teamMember = new TeamMember();
+		teamMember.setEmployee(projectManager.getEmployee());
+		teamMember.getEmployee().setClaims(this.claimService.getTeamMemberClaims().getData());
+		this.employeeService.updateEmployee(teamMember.getEmployee());
+
+		PastRole pastRole = new PastRole(new Date(),this.roleService.getProjectManagerRole().getData(),teamMember.getEmployee());
+		this.pastRoleService.addPastRole(pastRole);
+
+		teamMember.setMemberSince(new Date());
+		teamMember.setSalary(projectManager.getSalary());
+		Team team = this.teamService.getDefaultNullTeam().getData();
+		teamMember.setTeam(team);
+		this.teamMemberRepository.save(teamMember);
+		
+		return new SuccessResult(Messages.EmployeeAssignAsTeamMember);
+	}
+
+	@Override
+	@Transactional
+	public Result assignTeamMember(TeamLeader teamLeader) {
+		TeamMember teamMember = new TeamMember();
+		teamMember.setEmployee(teamLeader.getEmployee());
+		teamMember.getEmployee().setClaims(this.claimService.getTeamMemberClaims().getData());
+		this.employeeService.updateEmployee(teamMember.getEmployee());
+
+		PastRole pastRole = new PastRole(new Date(),this.roleService.getTeamLeaderRole().getData(),teamMember.getEmployee());
+		this.pastRoleService.addPastRole(pastRole);
+
+		teamMember.setMemberSince(new Date());
+		teamMember.setSalary(teamLeader.getSalary());
+		Team team = this.teamService.getDefaultNullTeam().getData();
+		teamMember.setTeam(team);
+		this.teamMemberRepository.save(teamMember);
+		
+		return new SuccessResult(Messages.EmployeeAssignAsTeamMember);
+	}
+
+	@Override
+	public Result setTeamMembersTeamNull(TeamMember teamMember) {
+		teamMember.setTeam(this.teamService.getDefaultNullTeam().getData());
+		this.teamMemberRepository.save(teamMember);
 		return new SuccessResult();
 	}
 
