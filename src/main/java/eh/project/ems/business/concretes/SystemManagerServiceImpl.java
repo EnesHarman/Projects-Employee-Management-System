@@ -7,6 +7,7 @@ import java.util.List;
 import eh.project.ems.business.abstracts.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import eh.project.ems.business.constants.Messages;
@@ -108,6 +109,7 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 
 
 	@Override
+	@Transactional
 	public Result deleteProject(long projectId) {
 		DataResult<Project> projectResult = this.projectService.getProjectById(projectId);
 		if(!projectResult.getResult()) {
@@ -117,9 +119,14 @@ public class SystemManagerServiceImpl implements SystemManagerService{
 		if(!projectManagerResult.getResult()) {
 			return new ErrorResult(projectResult.getMessage());
 		}
-		
+		System.out.println("Team count "+projectResult.getData().getTeams().size());
+		projectResult.getData().getTeams().forEach(team->{
+			System.out.println("gird");
+			this.projectManagerService.removeTeamFromProject(team.getTeamId());
+		});
+
 		this.teamMemberService.assignTeamMember(projectManagerResult.getData());
-		
+
 		this.projectService.deleteProject(projectResult.getData());
 		
 		this.projectManagerService.deleteProjectManager(projectManagerResult.getData());
